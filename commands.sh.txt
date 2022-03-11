@@ -1,0 +1,1 @@
+gmx pdb2gmx -ignh -f fullmodbzip1.pdb -o bzipprocessed.gro
