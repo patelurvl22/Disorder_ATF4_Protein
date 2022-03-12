@@ -1,3 +1,3 @@
 gmx pdb2gmx -ignh -f fullmodbzip1.pdb -o bzipprocessed.gro
 gmx editconf -f bzipprocessed.gro -o bzipnewbox.gro -c -d 1.0 -bt cubic
-gmx solvate -cp bzipnewbox.gro -cs /a99SBdisp.ff/a99SBdisp_water.gro -o bzipsolv.gro -p topol.top
+gmx solvate -cp bzipnewbox.gro -cs a99SBdisp.ff/a99SBdisp_water.gro -o bzipsolv.gro -p topol.top
