@@ -4,6 +4,11 @@ echo 1
 } | gmx pdb2gmx -ignh -f fullmodbzip1.pdb -o bzipprocessed.gro
 gmx editconf -f bzipprocessed.gro -o bzipnewbox.gro -c -d 1.0 -bt cubic
 gmx solvate -cp bzipnewbox.gro -cs a99SBdisp.ff/a99SBdisp_water.gro -o bzipsolv.gro -p topol.top
-mv ions.mdp.txt ions.mdp
 gmx grompp -f ions.mdp -c bzipsolv.gro -p topol.top -o ions.tpr
 echo 13 | gmx genion -s ions.tpr -o bzipsolv_ions.gro -p topol.top -pname NA -nname CL -neutral
+gmx grompp -f minim.mdp -c bzipsolv_ions.gro -p topol.top -o em.tpr
+gmx mdrun -v -deffnm em
+gmx grompp -f nvt.mdp -c em.gro -r em.gro -p topol.top -o nvt.tpr
+gmx mdrun -deffnm nvt
+gmx grompp -f md.mdp -c npt.gro -t npt.cpt -p topol.top -o bzip.tpr
+gmx mdrun -deffnm bzip
