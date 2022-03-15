@@ -1,16 +1,15 @@
 {
 echo 1
 echo 1
-} | gmx pdb2gmx -ignh -f fullmodbzip1.pdb -o bzipprocessed.gro
-gmx editconf -f bzipprocessed.gro -o bzipnewbox.gro -c -d 1.0 -bt cubic
-gmx solvate -cp bzipnewbox.gro -cs a99SBdisp.ff/a99SBdisp_water.gro -o bzipsolv.gro -p topol.top
-gmx grompp -f ions.mdp -c bzipsolv.gro -p topol.top -o ions.tpr
-echo 13 | gmx genion -s ions.tpr -o bzipsolv_ions.gro -p topol.top -pname NA -nname CL -neutral
-gmx grompp -f minim.mdp -c bzipsolv_ions.gro -p topol.top -o em.tpr
-gmx mdrun -deffnm em
-gmx grompp -f nvt.mdp -c em.gro -r em.gro -p topol.top -o nvt.tpr
-gmx mdrun -deffnm nvt
-gmx grompp -f npt.mdp -c nvt.gro -r nvt.gro -t nvt.cpt -p topol.top -o npt.tpr
-gmx mdrun -deffnm npt
-gmx grompp -f md.mdp -c npt.gro -t npt.cpt -p topol.top -o bzip.tpr
-gmx mdrun -deffnm bzip
+} | gmx_cpu_run gmx pdb2gmx -ignh -f fullmodbzip1.pdb -o bzipprocessed.gro
+gmx_cpu_run gmx solvate -cp bzipnewbox.gro -cs a99SBdisp.ff/a99SBdisp_water.gro -o bzipsolv.gro -p topol.top
+gmx_cpu_run gmx grompp -f ions.mdp -c bzipsolv.gro -p topol.top -o ions.tpr
+echo 13 | gmx_cpu_run gmx genion -s ions.tpr -o bzipsolv_ions.gro -p topol.top -pname NA -nname CL -neutral
+gmx_cpu_run gmx grompp -f minim.mdp -c bzipsolv_ions.gro -p topol.top -o em.tpr
+gmx_cpu_run gmx mdrun -deffnm em
+gmx_cpu_run gmx grompp -f nvt.mdp -c em.gro -r em.gro -p topol.top -o nvt.tpr
+gmx_cpu_run gmx mdrun -deffnm nvt
+gmx_cpu_run gmx grompp -f npt.mdp -c nvt.gro -r nvt.gro -t nvt.cpt -p topol.top -o npt.tpr
+gmx_cpu_run gmx mdrun -deffnm npt
+gmx_cpu_run gmx grompp -f md.mdp -c npt.gro -t npt.cpt -p topol.top -o bzip.tpr
+gmx_cpu_run gmx mdrun -deffnm bzip
