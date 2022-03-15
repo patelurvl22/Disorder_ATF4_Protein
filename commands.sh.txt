@@ -3,7 +3,7 @@ echo 1
 echo 1
 } | gmx_cpu_run gmx pdb2gmx -ignh -f fullmodbzip1.pdb -o bzipprocessed.gro
 gmx_cpu_run gmx solvate -cp bzipnewbox.gro -cs a99SBdisp.ff/a99SBdisp_water.gro -o bzipsolv.gro -p topol.top
-gmx_cpu_run gmx grompp -f ions.mdp -c bzipsolv.gro -p topol.top -o ions.tpr
+gmx_cpu_run gmx grompp -f ions.mdp -c bzipsolv.gro -p topol.top -o ions.tpr -maxwarn 1
 echo 13 | gmx_cpu_run gmx genion -s ions.tpr -o bzipsolv_ions.gro -p topol.top -pname NA -nname CL -neutral
 gmx_cpu_run gmx grompp -f minim.mdp -c bzipsolv_ions.gro -p topol.top -o em.tpr
 gmx_cpu_run gmx mdrun -deffnm em
