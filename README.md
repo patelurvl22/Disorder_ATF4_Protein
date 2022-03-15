@@ -13,4 +13,4 @@
 ###  <p align = "center"> All files and command script was used from mdtutorials.com (http://www.mdtutorials.com/gmx/lysozyme/index.html)
 #### 2. 'command.sh.txt' file  is for general scripts for gromacs
 #### 3. In 'ions.mdp' file coulombtype was adjusted to PME
-#### 4. 'fullmodbzip1.pdb' is model bZip region of ATF4
+#### 4. 'fullmodbzip1.pdb' is modelled bZip region of ATF4
