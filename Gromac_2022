@@ -28,5 +28,5 @@ gmx_gpu_run gmx grompp -f npt.mdp -c nvt.gro -r nvt.gro -t nvt.cpt -p topol.top 
 module purge
 module load gromacs/2022.02.22/gpu-nompi
 gmx mdrun -deffnm npt
-gmx_gpu_run gmx grompp -f md.mdp -c npt.gro -t npt.cpt -p topol.top -o bzip.tpr
-gmx_gpu_run gmx mdrun -deffnm bzip
+gmx grompp -f md.mdp -c npt.gro -t npt.cpt -p topol.top -o bzip.tpr
+gmx mdrun -deffnm bzip
