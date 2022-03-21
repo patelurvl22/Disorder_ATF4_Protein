@@ -1,0 +1,51 @@
+#!/bin/bash
+
+# Copy/paste this job script into a text file and submit with the command:
+#    sbatch thefilename
+# job standard output will go to the file slurm-%j.out (where %j is the job ID)
+
+#SBATCH --time=10:00:00   # walltime limit (HH:MM:SS)
+#SBATCH --nodes=1   # number of nodes
+#SBATCH --ntasks-per-node=16   # 36 processor core(s) per node
+#SBATCH --mem=64G   # maximum memory per node
+#SBATCH --gres=gpu:1
+#SBATCH --partition=gpu    # gpu node(s)
+#SBATCH --job-name="ProductionRun01ns"
+#SBATCH --mail-user=upatel@iastate.edu   # email address
+#SBATCH --mail-type=BEGIN
+#SBATCH --mail-type=END
+#SBATCH --mail-type=FAIL
+
+# LOAD MODULES, INSERT CODE, AND RUN YOUR PROGRAMS HERE
+module purge
+echo module use /opt/rit/singularity/devel.2022/singularity/modules/
+module load gromacs/2022.02.22/cpu-nompi
+module load intel
+cd /work/LAS/jroche-lab/Urval/md/03142022trial0_1ns_atf4/Disorder_ATF4_Protein_gpu
+
+{
+echo 1
+echo 1
+} | gmx pdb2gmx -ignh -f fullmodbzip1.pdb -o bzipprocessed.gro
+gmx editconf -f bzipprocessed.gro -o bzipnewbox.gro -c -d 1.0 -bt cubic
+gmx solvate -cp bzipnewbox.gro -cs a99SBdisp.ff/a99SBdisp_water.gro -o bzipsolv.gro -p topol.top
+gmx grompp -f ions.mdp -c bzipsolv.gro -p topol.top -o ions.tpr -maxwarn 1
+echo 13 | gmx genion -s ions.tpr -o bzipsolv_ions.gro -p topol.top -pname NA -nname CL -neutral
+gmx grompp -f minim.mdp -c bzipsolv_ions.gro -p topol.top -o em.tpr
+module purge
+module load gromacs/2022.02.22/gpu-nompi
+gmx mdrun -deffnm em
+module purge
+module load gromacs/2022.02.22/cpu-nompi
+gmx grompp -f nvt.mdp -c em.gro -r em.gro -p topol.top -o nvt.tpr
+module purge
+module load gromacs/2022.02.22/gpu-nompi
+gmx mdrun -deffnm nvt
+module purge
+module load gromacs/2022.02.22/cpu-nompi
+gmx_gpu_run gmx grompp -f npt.mdp -c nvt.gro -r nvt.gro -t nvt.cpt -p topol.top -o npt.tpr
+module purge
+module load gromacs/2022.02.22/gpu-nompi
+gmx mdrun -deffnm npt
+gmx_gpu_run gmx grompp -f md.mdp -c npt.gro -t npt.cpt -p topol.top -o bzip.tpr
+gmx_gpu_run gmx mdrun -deffnm bzip
