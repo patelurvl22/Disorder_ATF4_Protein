@@ -14,3 +14,6 @@
 #### 2. 'command.sh.txt' file  is for general scripts for gromacs
 #### 3. In 'ions.mdp' file coulombtype was adjusted to PME
 #### 4. 'fullmodbzip1.pdb' is modelled bZip region of ATF4
+#### 5. Gromac_2022 script is for updated Gromacs2022 created by Zhao Xeufeng perform ~17ns/day
+#### 6. mdscript_2021 perform ~35 ns/day
+
