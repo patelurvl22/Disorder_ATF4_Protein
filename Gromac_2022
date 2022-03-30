@@ -24,7 +24,7 @@ module load gromacs/2022.02.22/gpu-nompi
 gmx mdrun -deffnm nvt
 module purge
 module load gromacs/2022.02.22/cpu-nompi
-gmx_gpu_run gmx grompp -f npt.mdp -c nvt.gro -r nvt.gro -t nvt.cpt -p topol.top -o npt.tpr
+gmx grompp -f npt.mdp -c nvt.gro -r nvt.gro -t nvt.cpt -p topol.top -o npt.tpr
 module purge
 module load gromacs/2022.02.22/gpu-nompi
 gmx mdrun -deffnm npt
