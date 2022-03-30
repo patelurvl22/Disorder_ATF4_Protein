@@ -1,5 +1,5 @@
 module purge
-echo module use /opt/rit/singularity/devel.2022/singularity/modules/
+module use /opt/rit/singularity/devel.2022/singularity/modules/
 module load gromacs/2022.02.22/cpu-nompi
 module load intel
 cd /work/LAS/jroche-lab/Urval/md/03142022trial0_1ns_atf4/Disorder_ATF4_Protein
