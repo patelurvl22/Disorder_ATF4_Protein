@@ -32,9 +32,9 @@ gmx mdrun -deffnm bzip
 
 module purge
 module load gromacs/2022.02.22/cpu-nompi
-gmx trjconv -f bzip.xtc -s bzip.tpr -tu ns -o bzip_noPBC.xtc -pbc nojump -center
-gmx trjconv -f bzip_noPBC.xtc -s bzip.tpr -tu ns -o bzip_noPBC1.xtc -pbc atom -center
-gmx trjconv -f bzip_noPBC1.xtc -s bzip.tpr -tu ns -o bzip_noPBC2.xtc -pbc mol -ur compact -center
-gmx trjconv -s bzip.tpr -f bzip_noPBC1.xtc -dt 20 -o bzip_noPBC.pdb
-gmx trjconv -s bzip.tpr -f bzip_noPBC.xtc -skip 5 -o bzip_noPBC_5ns.xtc
-gmx trjconv -s bzip.tpr -f bzip_noPBC.xtc -skip 10 -o bzip_noPBC_10ns.pdb
+{ echo 1 echo 0 } | gmx trjconv -f bzip.xtc -s bzip.tpr -tu ns -o bzip_noPBC.xtc -pbc nojump -center
+{ echo 1 echo 0 } | gmx trjconv -f bzip_noPBC.xtc -s bzip.tpr -tu ns -o bzip_noPBC1.xtc -pbc atom -center
+{ echo 1 echo 0 } | gmx trjconv -f bzip_noPBC1.xtc -s bzip.tpr -tu ns -o bzip_noPBC2.xtc -pbc mol -ur compact -center
+echo 1 | gmx trjconv -s bzip.tpr -f bzip_noPBC1.xtc -dt 20 -o bzip_noPBC.pdb
+echo 1 | gmx trjconv -s bzip.tpr -f bzip_noPBC2.xtc -skip 5 -o bzip_noPBC_5ns.xtc
+echo 1 | gmx trjconv -s bzip.tpr -f bzip_noPBC2.xtc -skip 10 -o bzip_noPBC_10ns.pdb
