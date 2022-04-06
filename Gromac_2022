@@ -1,7 +1,6 @@
 module purge
 module use /opt/rit/singularity/devel.2022/singularity/modules/
 module load gromacs/2022.02.22/cpu-nompi
-module load intel
 cd /work/LAS/jroche-lab/Urval/md/03142022trial0_1ns_atf4/Disorder_ATF4_Protein
 
 {
@@ -30,3 +29,12 @@ module load gromacs/2022.02.22/gpu-nompi
 gmx mdrun -deffnm npt
 gmx grompp -f md.mdp -c npt.gro -t npt.cpt -p topol.top -o bzip.tpr
 gmx mdrun -deffnm bzip
+
+module purge
+module load gromacs/2022.02.22/cpu-nompi
+gmx trjconv -f bzip.xtc -s bzip.tpr -tu ns -o bzip_noPBC.xtc -pbc nojump -center
+gmx trjconv -f bzip_noPBC.xtc -s bzip.tpr -tu ns -o bzip_noPBC1.xtc -pbc atom -center
+gmx trjconv -f bzip_noPBC1.xtc -s bzip.tpr -tu ns -o bzip_noPBC2.xtc -pbc mol -ur compact -center
+gmx trjconv -s bzip.tpr -f bzip_noPBC1.xtc -dt 20 -o bzip_noPBC.pdb
+gmx trjconv -s bzip.tpr -f bzip_noPBC.xtc -skip 5 -o bzip_noPBC_5ns.xtc
+gmx trjconv -s bzip.tpr -f bzip_noPBC.xtc -skip 10 -o bzip_noPBC_10ns.pdb
