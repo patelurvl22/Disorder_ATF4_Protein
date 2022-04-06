@@ -1,0 +1,22 @@
+
+
+        Interactively run  gromacs gpu in pronto/condo/nova using 4CPUs and 1GPU
+        $ srun -N1 -n4 -t2:0:0 -pgpu --gres=gpu:1 --pty bash
+        $ module spider gromacs
+        $ module load gromacs/gmx2021.1-cuda11.2-gcc7.3-mpich3.2
+
+        # version of CUDA driver in nova gpu  <= version  of CUDA runtime in container
+        $ gmx_gpu_run  gmx mdrun -nt 4 -pin on -gpu_id 0 -nsteps 10000
+        $ mpirun -np 1  gmx_gpu_mpi_run  gmx_mpi mdrun -ntomp 4  -pin on -gpu_id 0 -nsteps 10000
+
+        # version of CUDA driver in crysis > version of CUDA runtime in container
+        $ gmx_gpu_run_nv  gmx mdrun -nt 4 -pin on -gpu_id 0 -nsteps 10000
+        $ mpirun -np 1  gmx_gpu_mpi_run_nv  gmx_mpi mdrun -ntomp 4  -pin on -gpu_id 0 -nsteps 10000
+
+        Using the partition legion in pronto
+        $ srun -N1 -n16 -t4:0:0 -plegion --pty bash
+        $ gmx_multicores_legion_run  gmx mdrun -nt 16 -pin on  -nsteps 1000
+
+        Using the partition freegpu in condo
+        $ srun -N1 -n8 -t4:0:0 -pfreegpu --gres=gpu:1 --pty bash
+        $ gmx_gpu_condo_freegpu_run  gmx mdrun -nt 8 -pin on  -gpu_id 0 -nsteps 10000es=gpu:1 --pty bash
